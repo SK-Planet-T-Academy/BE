@@ -21,6 +21,9 @@ public class UserService {
   @Transactional(readOnly = true)
   public List<UserResponseDto> findAll() {
     List<User> retrieved = userRepository.findAll();
+    if (retrieved.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "등록된 사용자가 없습니다.");
+    }
     return retrieved.stream().map(UserResponseDto::from).toList();
   }
 
