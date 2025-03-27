@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,9 +27,17 @@ public class User {
   @Column(name = "name", nullable = false)
   private String userName;
 
+  @Builder
   public User(String userEmail, String password, String userName) {
     this.userEmail = userEmail;
     this.password = password;
     this.userName = userName;
+  }
+
+  public User updatedFrom(String userEmail, String password, String userName) {
+    this.userEmail = userEmail;
+    this.password = password;
+    this.userName = userName;
+    return this;
   }
 }

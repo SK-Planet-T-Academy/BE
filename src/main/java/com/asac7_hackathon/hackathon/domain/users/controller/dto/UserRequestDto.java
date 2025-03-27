@@ -16,6 +16,7 @@ public class UserRequestDto {
   @NotBlank(message = "비밀번호를 입력해주세요.")
   private final String password;
 
+  @NotBlank(message = "이름을 입력해주세요.")
   private final String name;
 
   public User toEntity() {
