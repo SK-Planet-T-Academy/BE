@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     // 첫 번째 에러 메시지만 전달 (여러 개 처리할 경우 errors.toString() 사용 가능)
     String message = errors.values().iterator().next();
 
-    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, message, request.getRequestURI());
+    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, message);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
   }
 
@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(ResponseStatusException.class)
   public ResponseEntity<ErrorResponse> handleNotFoundException(ResponseStatusException ex, HttpServletRequest request) {
     ErrorResponse errorResponse = new ErrorResponse(
-        HttpStatus.NOT_FOUND, ex.getReason(), request.getRequestURI());
+        HttpStatus.NOT_FOUND, ex.getReason());
     return ResponseEntity.status(ex.getStatusCode()).body(errorResponse);
   }
 
@@ -44,8 +44,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponse> handleGenericException(Exception ex, HttpServletRequest request) {
     ErrorResponse errorResponse = new ErrorResponse(
         HttpStatus.INTERNAL_SERVER_ERROR,
-        "서버 내부 오류가 발생했습니다.",
-        request.getRequestURI()
+        "서버 내부 오류가 발생했습니다."
     );
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
   }
