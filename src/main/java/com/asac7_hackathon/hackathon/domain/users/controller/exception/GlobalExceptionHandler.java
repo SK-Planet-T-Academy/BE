@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
   // 서버 내부 오류 - 500 Internal Server Error
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleGenericException(Exception ex, HttpServletRequest request) {
-    logger.error("서버 내부 오류 발생", ex.getMessage());
+    logger.error("서버 내부 오류 발생", ex);
 
     // 오류 응답 메시지 작성
     ErrorResponse errorResponse = new ErrorResponse(

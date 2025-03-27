@@ -45,7 +45,7 @@ public class PostService {
   }
 
   // r
-  @Transactional(readOnly = true)
+  @Transactional
   public PostResponseDto getPost(Long postId) {
     Post post = postRepository.findById(postId)
         .orElseThrow(() -> {
@@ -64,7 +64,7 @@ public class PostService {
   }
 
 
-  @Transactional(readOnly = true)
+  @Transactional
   public List<PostResponseDto> getAllByCategory(Category category) {
     if (category == null || !Category.isValidCategory(category)) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "유효하지 않은 카테고리입니다.");
@@ -79,7 +79,7 @@ public class PostService {
         .toList();
   }
 
-  @Transactional(readOnly = true)
+  @Transactional
   public List<PostResponseDto> getPosts() {
     List<Post> posts = postRepository.findAll();
     if (posts.isEmpty()) {

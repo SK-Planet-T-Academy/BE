@@ -4,6 +4,7 @@ import com.asac7_hackathon.hackathon.domain.posts.entitiy.Post;
 import com.asac7_hackathon.hackathon.domain.posts.types.Category;
 import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserResponseDto;
 import com.asac7_hackathon.hackathon.domain.users.repository.UserRepository;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +24,8 @@ public class PostResponseDto {
   final int viewsCount;
   final UserResponseDto user;
   final Category category;
+  final LocalDateTime createdAt;
+  final LocalDateTime updatedAt;
 
   public static PostResponseDto of(Post entity) {
     UserResponseDto userInfo = UserResponseDto.from(entity.getUser());
@@ -35,7 +38,9 @@ public class PostResponseDto {
         entity.getCommentsCount(),
         entity.getViewsCount(),
         userInfo,
-        entity.getCategory()
+        entity.getCategory(),
+        entity.getCreatedAt(),
+        entity.getUpdatedAt()
     );
   }
 }

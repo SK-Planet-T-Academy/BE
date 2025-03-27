@@ -1,7 +1,6 @@
 package com.asac7_hackathon.hackathon.domain.users.repository.entity;
 
 import com.asac7_hackathon.hackathon.domain.comments.model.Comment;
-import com.asac7_hackathon.hackathon.domain.comments.model.Like;
 import com.asac7_hackathon.hackathon.domain.posts.entitiy.Post;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -41,12 +40,6 @@ public class User {
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Post> posts = new ArrayList<>();
-
-//  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//  private List<Comment> comments = new ArrayList<>();
-//
-//  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//  private List<Like> likes = new ArrayList<>();
 
   @Builder
   public User(String userEmail, String password, String userName) {

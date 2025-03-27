@@ -35,7 +35,7 @@ public class Post extends BaseTimeEntity {
   @Column(nullable = false)
   private String title;
 
-  @Column(nullable = false, length = 1000)
+  @Column(nullable = false)
   private String content;
 
   private int likesCount = 0;
