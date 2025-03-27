@@ -1,5 +1,6 @@
 package com.asac7_hackathon.hackathon.domain.users.controller.exception;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -15,32 +16,36 @@ import org.springframework.web.server.ResponseStatusException;
 public class GlobalExceptionHandler {
 
   // 1. DTO 검증 실패 예외 (400 Bad Request)
-  @ExceptionHandler(MethodArgumentNotValidException.class) // 각 유형에 대해 처리하는 메서드 정의(유효성 검사 실패 시 발생하는 예외 처리)
-  public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
+    // 여러 개의 에러 메시지를 모아서 전달
     Map<String, String> errors = new HashMap<>();
     for (FieldError error : ex.getBindingResult().getFieldErrors()) {
       errors.put(error.getField(), error.getDefaultMessage());
-      errors.put("status", ex.getStatusCode().toString());
     }
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+
+    // 첫 번째 에러 메시지만 전달 (여러 개 처리할 경우 errors.toString() 사용 가능)
+    String message = errors.values().iterator().next();
+
+    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, message);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
   }
 
-  // 2. 특정 데이터가 존재하지 않는 경우 예외 (404 Not Found)
+  // 데이터가 존재하지 않을 때 - 404 Not Found
   @ExceptionHandler(ResponseStatusException.class)
-  public ResponseEntity<Map<String, String>> handleNotFoundException(ResponseStatusException ex) {
-    Map<String, String> errorResponse = new HashMap<>();
-    errorResponse.put("error", ex.getReason());
-    errorResponse.put("status", ex.getStatusCode().toString());
+  public ResponseEntity<ErrorResponse> handleNotFoundException(ResponseStatusException ex, HttpServletRequest request) {
+    ErrorResponse errorResponse = new ErrorResponse(
+        HttpStatus.NOT_FOUND, ex.getReason());
     return ResponseEntity.status(ex.getStatusCode()).body(errorResponse);
   }
 
-  // 3. 기타 예외 (500 Internal Server Error)
+  // 서버 내부 오류 - 500 Internal Server Error
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
-    Map<String, String> errorResponse = new HashMap<>();
-    errorResponse.put("error", "서버 내부 오류가 발생했습니다.");
-    errorResponse.put("status", HttpStatus.INTERNAL_SERVER_ERROR.toString());
+  public ResponseEntity<ErrorResponse> handleGenericException(Exception ex, HttpServletRequest request) {
+    ErrorResponse errorResponse = new ErrorResponse(
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        "서버 내부 오류가 발생했습니다."
+    );
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
   }
-
 }
