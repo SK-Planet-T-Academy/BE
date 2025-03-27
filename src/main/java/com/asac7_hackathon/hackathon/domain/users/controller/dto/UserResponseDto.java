@@ -11,12 +11,14 @@ public class UserResponseDto {
   private final Integer id;
   private final String email;
   private final String name;
+  private final Boolean isLogin;
 
   public static UserResponseDto from(User entity) {
     return new UserResponseDto(
         entity.getUserId(),
         entity.getUserEmail(),
-        entity.getUserName()
+        entity.getUserName(),
+        entity.getIsLogin()
     );
   }
 }
