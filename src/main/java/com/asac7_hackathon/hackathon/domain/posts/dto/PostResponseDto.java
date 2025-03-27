@@ -38,11 +38,4 @@ public class PostResponseDto {
         entity.getCategory()
     );
   }
-  public static List<PostResponseDto> of(List<Post> entitys) {
-    return entitys.stream()
-        .filter(Post::isState)
-        .map(PostResponseDto::of)
-        .collect(Collectors.toList());
-  }
-
 }
