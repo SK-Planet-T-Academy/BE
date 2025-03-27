@@ -13,14 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-
   // 조회
   @Query("SELECT p FROM Post p WHERE p.postId = :id AND p.state = true")
-  Post findByIdAndStateIsTrue(@Param("id") Long id);
-  Optional<Post> findByPostId(Long id); // 단일 글 조회
-//  List<Post> findAllByUserId(Long userId);// 유저가 작성한 글 조회
+  Optional<Post> findByIdAndStateIsTrue(@Param("id") Long id);
   List<Post> findAllByCategory(Category category); // 카테고리별 조회
-  List<Post> findAll(); // 전체 조회
 
   @Modifying
   @Transactional
