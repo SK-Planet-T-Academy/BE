@@ -1,5 +1,6 @@
 package com.asac7_hackathon.hackathon.domain.users.service;
 
+import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserLoginRequestDto;
 import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserResponseDto;
 import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserUpsertRequestDto;
 import com.asac7_hackathon.hackathon.domain.users.repository.UserRepository;
@@ -70,4 +71,25 @@ public class UserService {
     userRepository.delete(user);
     log.info("유저 삭제 완료. ID : {}", id);
   }
+
+  @Transactional(readOnly = true)
+  public UserResponseDto login(UserLoginRequestDto request) {
+    // 1. 이메일로 사용자 조회
+    User user = userRepository.findByUserEmail(request.getEmail())
+        .orElseThrow(() -> {
+          log.error("이메일이 존재하지 않습니다. email: {}", request.getEmail());
+          return new ResponseStatusException(HttpStatus.UNAUTHORIZED, "이메일 또는 비밀번호가 올바르지 않습니다.");
+        });
+
+    // 2. 비밀번호 검증 (암호화 X, 평문 비교)
+    if (!user.getPassword().equals(request.getPassword())) {
+      log.error("비밀번호 불일치. email: {}", request.getEmail());
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "이메일 또는 비밀번호가 올바르지 않습니다.");
+    }
+
+    // 3. 로그인 성공 시 사용자 정보 반환
+    log.info("로그인 성공. email: {}", request.getEmail());
+    return UserResponseDto.from(user);
+  }
+
 }

@@ -1,5 +1,6 @@
 package com.asac7_hackathon.hackathon.domain.users.controller;
 
+import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserLoginRequestDto;
 import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserUpsertRequestDto;
 import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserResponseDto;
 import com.asac7_hackathon.hackathon.domain.users.service.UserService;
@@ -71,5 +72,14 @@ public class UserController {
     return ResponseEntity
         .status(HttpStatus.ACCEPTED)
         .body(null);
+  }
+
+  // 로그인 API (Spring Security 적용 안 됨)
+  @ResponseBody
+  @RequestMapping(value = "/login", method = RequestMethod.POST)
+  public ResponseEntity<UserResponseDto> login(@RequestBody @Valid UserLoginRequestDto request) {
+    log.info("로그인 요청: {}", request.getEmail());
+    UserResponseDto user = userService.login(request);
+    return ResponseEntity.ok(user);
   }
 }
