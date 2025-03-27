@@ -8,8 +8,11 @@ import com.asac7_hackathon.hackathon.domain.posts.entitiy.Post;
 //import com.asac7_hackathon.hackathon.domain.posts.repository.PostLikeRepository;
 import com.asac7_hackathon.hackathon.domain.posts.repository.PostRepository;
 import com.asac7_hackathon.hackathon.domain.posts.types.Category;
+import com.asac7_hackathon.hackathon.domain.users.repository.UserRepository;
+import com.asac7_hackathon.hackathon.domain.users.repository.entity.User;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +22,7 @@ public class PostService {
   private final PostRepository postRepository;
 //  private final CommentRepository commentRepository;
 //  private final PostLikeRepository postLikeRepository;
-
+//private final UserRepository userRepository;
   // u
   @Transactional
   public void modifyPost(Long postId, String title, String content, Category category) {
@@ -30,14 +33,13 @@ public class PostService {
 
   // c
   @Transactional
-  public PostResponseDto createPost(PostBoardReq request) {
-//    if(requestDto.getUser() == null) { // 유저를 찾을 수 없다면
-//      throw new IllegalArgumentException("예외분리 필요");
-//    }
+  public PostResponseDto createPost(PostBoardReq request, User user) {
+    // Post 객체 생성 시 User 객체를 바로 전달
     Post toSave = Post.builder()
         .title(request.getTitle())
         .content(request.getContent())
         .category(request.getCategory())
+        .user(user)  // Optional<User>가 아닌 User 객체를 전달
         .build();
     Post saved = postRepository.save(toSave);
 

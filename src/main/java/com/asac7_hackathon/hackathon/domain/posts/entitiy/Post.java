@@ -1,6 +1,7 @@
 package com.asac7_hackathon.hackathon.domain.posts.entitiy;
 
 import com.asac7_hackathon.hackathon.domain.posts.types.Category;
+import com.asac7_hackathon.hackathon.domain.users.repository.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -48,6 +49,9 @@ public class Post {
 //  @ManyToOne(fetch = FetchType.LAZY)
 //  @JoinColumn(name = "user_id", nullable = false)
 //  private User user;
+  @ManyToOne
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
   private Category category;
 

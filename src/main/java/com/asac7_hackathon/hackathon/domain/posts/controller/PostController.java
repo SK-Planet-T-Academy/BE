@@ -5,6 +5,10 @@ import com.asac7_hackathon.hackathon.domain.posts.dto.PostRequestDto.PostBoardRe
 import com.asac7_hackathon.hackathon.domain.posts.dto.PostResponseDto;
 import com.asac7_hackathon.hackathon.domain.posts.service.PostService;
 import com.asac7_hackathon.hackathon.domain.posts.types.Category;
+import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserResponseDto;
+import com.asac7_hackathon.hackathon.domain.users.repository.UserRepository;
+import com.asac7_hackathon.hackathon.domain.users.repository.entity.User;
+import com.asac7_hackathon.hackathon.domain.users.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +28,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
   private final PostService postService;
+  private final UserRepository userRepository;
+
 
   @ResponseBody
   @PostMapping("")
   public ResponseEntity<PostResponseDto> create(@RequestBody PostBoardReq request) {
-    PostResponseDto createPost = postService.createPost(request);
+    User user = userRepository.findById(request.getUserId())
+        .orElseThrow(() -> new RuntimeException("User not found"));
+
+    PostResponseDto createPost = postService.createPost(request, user);
     return ResponseEntity.ok(createPost);
   }
 
