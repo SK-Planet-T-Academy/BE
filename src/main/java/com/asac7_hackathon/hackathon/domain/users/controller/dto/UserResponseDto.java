@@ -12,7 +12,7 @@ public class UserResponseDto {
   private final String email;
   private final String name;
 
-  public static UserResponseDto of(User entity) {
+  public static UserResponseDto from(User entity) {
     return new UserResponseDto(
         entity.getUserId(),
         entity.getUserEmail(),

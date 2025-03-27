@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,12 +27,15 @@ public class User {
   private String password;
   @Column(name = "name", nullable = false)
   private String userName;
+  @Column(name = "date", nullable = false)
+  private LocalDateTime createdAt;
 
   @Builder
   public User(String userEmail, String password, String userName) {
     this.userEmail = userEmail;
     this.password = password;
     this.userName = userName;
+    this.createdAt = LocalDateTime.now();
   }
 
   public User updatedFrom(String userEmail, String password, String userName) {
