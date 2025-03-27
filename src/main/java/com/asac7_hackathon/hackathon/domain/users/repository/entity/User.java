@@ -1,4 +1,4 @@
-package com.asac7_hackathon.hackathon.user.repository.entity;
+package com.asac7_hackathon.hackathon.domain.users.repository.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

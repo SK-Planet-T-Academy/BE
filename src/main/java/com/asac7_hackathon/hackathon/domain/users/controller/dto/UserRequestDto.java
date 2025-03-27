@@ -1,6 +1,6 @@
-package com.asac7_hackathon.hackathon.user.controller.dto;
+package com.asac7_hackathon.hackathon.domain.users.controller.dto;
 
-import com.asac7_hackathon.hackathon.user.repository.entity.User;
+import com.asac7_hackathon.hackathon.domain.users.repository.entity.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;

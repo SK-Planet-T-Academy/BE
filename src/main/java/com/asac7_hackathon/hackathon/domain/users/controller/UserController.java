@@ -1,8 +1,8 @@
-package com.asac7_hackathon.hackathon.user.controller;
+package com.asac7_hackathon.hackathon.domain.users.controller;
 
-import com.asac7_hackathon.hackathon.user.controller.dto.UserRequestDto;
-import com.asac7_hackathon.hackathon.user.controller.dto.UserResponseDto;
-import com.asac7_hackathon.hackathon.user.service.UserService;
+import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserRequestDto;
+import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserResponseDto;
+import com.asac7_hackathon.hackathon.domain.users.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

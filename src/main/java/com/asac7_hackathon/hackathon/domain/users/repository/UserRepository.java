@@ -1,6 +1,6 @@
-package com.asac7_hackathon.hackathon.user.repository;
+package com.asac7_hackathon.hackathon.domain.users.repository;
 
-import com.asac7_hackathon.hackathon.user.repository.entity.User;
+import com.asac7_hackathon.hackathon.domain.users.repository.entity.User;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

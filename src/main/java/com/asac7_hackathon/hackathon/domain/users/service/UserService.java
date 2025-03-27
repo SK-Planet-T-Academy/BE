@@ -1,9 +1,9 @@
-package com.asac7_hackathon.hackathon.user.service;
+package com.asac7_hackathon.hackathon.domain.users.service;
 
-import com.asac7_hackathon.hackathon.user.controller.dto.UserRequestDto;
-import com.asac7_hackathon.hackathon.user.controller.dto.UserResponseDto;
-import com.asac7_hackathon.hackathon.user.repository.UserRepository;
-import com.asac7_hackathon.hackathon.user.repository.entity.User;
+import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserRequestDto;
+import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserResponseDto;
+import com.asac7_hackathon.hackathon.domain.users.repository.UserRepository;
+import com.asac7_hackathon.hackathon.domain.users.repository.entity.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
