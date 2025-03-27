@@ -23,8 +23,6 @@ public class PostResponseDto {
   final int viewsCount;
   final UserResponseDto user;
   final Category category;
-  final Date createAt;
-  final Date updateAt;
 
   public static PostResponseDto of(Post entity) {
     UserResponseDto userInfo = UserResponseDto.from(entity.getUser());
@@ -37,16 +35,14 @@ public class PostResponseDto {
         entity.getCommentsCount(),
         entity.getViewsCount(),
         userInfo,
-        entity.getCategory(),
-        entity.getCreateAt(),
-        entity.getUpdateAt()
+        entity.getCategory()
     );
   }
   public static List<PostResponseDto> of(List<Post> entitys) {
     return entitys.stream()
-            .filter(Post::isState)
-            .map(PostResponseDto::of)
-            .collect(Collectors.toList());
+        .filter(Post::isState)
+        .map(PostResponseDto::of)
+        .collect(Collectors.toList());
   }
 
 }

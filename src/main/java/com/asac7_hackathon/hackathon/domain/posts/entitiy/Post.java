@@ -2,25 +2,21 @@ package com.asac7_hackathon.hackathon.domain.posts.entitiy;
 
 import com.asac7_hackathon.hackathon.domain.posts.types.Category;
 import com.asac7_hackathon.hackathon.domain.users.repository.entity.User;
+import com.asac7_hackathon.hackathon.global.utils.BaseTimeEntity;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import java.util.Date;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "posts")
@@ -28,7 +24,7 @@ import org.hibernate.annotations.ColumnDefault;
 //@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Post {
+public class Post extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,38 +42,23 @@ public class Post {
   private int commentsCount = 0;
   private int viewsCount = 0;
 
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "user_id", nullable = false)
-//  private User user;
   @ManyToOne
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
+  @Enumerated(EnumType.STRING)
   private Category category;
 
-  @Column(name = "create_at")
-  private Date createAt;
-
-  @Column(name = "update_at")
-  private Date updateAt;
 
   public Post() {
     this.likesCount = 0;
     this.commentsCount = 0;
     this.viewsCount = 0;
   }
+
   @PrePersist
   public void prePersist() {
-    Date now = new Date();
-    this.createAt = now;
-    this.updateAt = now;
     this.state = true;
-  }
-
-  // 엔티티가 업데이트될 때 자동으로 호출
-  @PreUpdate
-  public void preUpdate() {
-    this.updateAt = new Date();
   }
 
   public void modifyPost(String title, String content, Category category) {

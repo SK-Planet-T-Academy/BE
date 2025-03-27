@@ -1,6 +1,5 @@
 package com.asac7_hackathon.hackathon.domain.posts.service;
 
-//import com.asac7_hackathon.hackathon.domain.comments.repository.CommentRepository;
 import com.asac7_hackathon.hackathon.domain.posts.dto.PostRequestDto;
 import com.asac7_hackathon.hackathon.domain.posts.dto.PostRequestDto.PostBoardReq;
 import com.asac7_hackathon.hackathon.domain.posts.dto.PostResponseDto;
@@ -20,26 +19,22 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PostService {
   private final PostRepository postRepository;
-//  private final CommentRepository commentRepository;
-//  private final PostLikeRepository postLikeRepository;
-//private final UserRepository userRepository;
   // u
   @Transactional
   public void modifyPost(Long postId, String title, String content, Category category) {
     Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("예외분리 필요"));
     post.modifyPost(title, content, category);
-    postRepository.save(post);
+//    postRepository.save(post);
   }
 
   // c
   @Transactional
   public PostResponseDto createPost(PostBoardReq request, User user) {
-    // Post 객체 생성 시 User 객체를 바로 전달
     Post toSave = Post.builder()
         .title(request.getTitle())
         .content(request.getContent())
         .category(request.getCategory())
-        .user(user)  // Optional<User>가 아닌 User 객체를 전달
+        .user(user)
         .build();
     Post saved = postRepository.save(toSave);
 
@@ -47,16 +42,16 @@ public class PostService {
   }
 
   // r
+  @Transactional
   public PostResponseDto getPost(Long postId) {
-    Post post = postRepository.findByPostId(postId)
+    Post post = postRepository.findById(postId)
         .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
 
     if (!post.isState()) {
       throw new IllegalArgumentException("게시글 상태가 비활성화되어 있습니다.");
     }
-
     // 조회수 증가
-    updateCount(postId, "viewsCount", 1);
+    postRepository.updateViewCount(postId, 1);
     return PostResponseDto.of(post);
   }
 
@@ -81,25 +76,24 @@ public class PostService {
   public void deletePost(Long postId) {
     Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("예외분리 필요"));
     post.deletePost(); // 삭제된 글임을 알리기 위해 상태를 변경
-    postRepository.save(post);
+//    postRepository.save(post);
   }
 
   // 개수 변화
-  @Transactional
-  public void updateCount(Long postId, String field, int value) {
-    switch (field) {
-      case "likesCount":
-        postRepository.updateLikeCount(postId, value);
-        break;
-      case "commentsCount":
-        postRepository.updateCommentCount(postId, value);
-        break;
-      case "viewsCount":
-        postRepository.updateViewCount(postId, value);
-        break;
-      default:
-        throw new IllegalArgumentException("잘못된 필드 이름입니다.");
-    }
-  }
+//  private void updateCount(Long postId, String field, int value) {
+//    switch (field) {
+//      case "likesCount":
+//        postRepository.updateLikeCount(postId, value);
+//        break;
+//      case "commentsCount":
+//        postRepository.updateCommentCount(postId, value);
+//        break;
+//      case "viewsCount":
+//        postRepository.updateViewCount(postId, value);
+//        break;
+//      default:
+//        throw new IllegalArgumentException("잘못된 필드 이름입니다.");
+//    }
+//  }
 
 }
