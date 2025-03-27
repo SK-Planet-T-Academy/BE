@@ -72,23 +72,51 @@ public class UserService {
     log.info("유저 삭제 완료. ID : {}", id);
   }
 
-  @Transactional(readOnly = true)
+  /** 로그인 로직 */
+  @Transactional
   public UserResponseDto login(UserLoginRequestDto request) {
-    // 1. 이메일로 사용자 조회
     User user = userRepository.findByUserEmail(request.getEmail())
         .orElseThrow(() -> {
           log.error("이메일이 존재하지 않습니다. email: {}", request.getEmail());
           return new ResponseStatusException(HttpStatus.UNAUTHORIZED, "이메일 또는 비밀번호가 올바르지 않습니다.");
         });
 
-    // 2. 비밀번호 검증 (암호화 X, 평문 비교)
+    // 1. 이미 로그인된 사용자라면 에러 발생
+    if (user.getIsLogin()) {
+      log.error("이미 로그인된 사용자입니다. email: {}", request.getEmail());
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 로그인된 사용자입니다.");
+    }
+
+    // 2. 비밀번호 검증
     if (!user.getPassword().equals(request.getPassword())) {
       log.error("비밀번호 불일치. email: {}", request.getEmail());
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "이메일 또는 비밀번호가 올바르지 않습니다.");
     }
 
-    // 3. 로그인 성공 시 사용자 정보 반환
+    // 3. 로그인 성공 -> 상태 변경
+    user.login();
+    userRepository.save(user);
     log.info("로그인 성공. email: {}", request.getEmail());
+
+    return UserResponseDto.from(user);
+  }
+
+  /** 로그아웃 로직 */
+  @Transactional
+  public UserResponseDto logout(String email) {
+    User user = userRepository.findByUserEmail(email)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+
+    // 1. 이미 로그아웃된 사용자라면 에러 발생
+    if (!user.getIsLogin()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 로그아웃된 사용자입니다.");
+    }
+
+    // 2. 로그아웃 -> 상태 변경
+    user.logout();
+    userRepository.save(user);
+    log.info("로그아웃 완료. email: {}", email);
+
     return UserResponseDto.from(user);
   }
 
