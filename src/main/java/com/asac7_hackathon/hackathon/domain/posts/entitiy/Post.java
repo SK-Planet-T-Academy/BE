@@ -72,5 +72,27 @@ public class Post extends BaseTimeEntity {
     this.content = "삭제된 글입니다";
     this.state = false;
   }
+
+  public void increaseLikeCount() {
+    this.likesCount++;
+  }
+
+  public void decreaseLikeCount() {
+    this.likesCount--;
+  }
+
+  public void increaseCommentCount() {
+    this.commentsCount++;
+  }
+
+  public void decreaseCommentCount() {
+    this.commentsCount--;
+  }
+
+  public void increaseView() {
+    this.viewsCount++;
+  }
+
+
 }
 
