@@ -1,4 +1,4 @@
-package com.asac7_hackathon.hackathon.domain.config;
+package com.asac7_hackathon.hackathon.global.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
