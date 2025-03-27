@@ -1,5 +1,7 @@
 package com.asac7_hackathon.hackathon.domain.comments.model;
 
+import com.asac7_hackathon.hackathon.domain.posts.entitiy.Post;
+import com.asac7_hackathon.hackathon.domain.users.repository.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,7 +17,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer commentId;
 
     @Column(nullable = false, length = 200)
     private String content;
@@ -26,7 +28,7 @@ public class Comment {
     @Column(nullable = true, name = "update_at")
     private LocalDateTime updateAt;
 
-    @OneToMany
-    @JoinColumn
-    private List<Like> like;
+    @ManyToOne
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
 }

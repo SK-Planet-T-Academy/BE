@@ -23,20 +23,14 @@ public class CommentController {
     private final CommentService service;
 
 
-    @GetMapping("/api/comments/{id}")
-    public ResponseEntity<CommentResponseDto> find(@PathVariable Integer id) {
-        CommentResponseDto viewed = service.find(id);
-        return ResponseEntity.ok(viewed);
+
+    @GetMapping("/api/comments/{postId}")
+    public ResponseEntity<List<CommentResponseDto>> findAll(@PathVariable Integer postId) {
+        List<CommentResponseDto> viewedAll = service.findAll(postId);
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(viewedAll);
     }
-
-
-//    @GetMapping("/api/comments")
-//    public ResponseEntity<List<CommentResponseDto>> findAll() {
-//        List<CommentResponseDto> viewedAll = service.findAll();
-//        return ResponseEntity
-//            .status(HttpStatus.OK)
-//            .body(viewedAll);
-//    }
 
 
     @PostMapping("/api/comments")
@@ -48,18 +42,18 @@ public class CommentController {
     }
 
 
-    @PatchMapping("/api/comments/{id}")
-    public ResponseEntity<CommentResponseDto> patchContent(@PathVariable Integer id, @RequestBody CommentRequestDto request) {
-        CommentResponseDto patched = service.patchContent(id, request);
+    @PatchMapping("/api/comments/{commentId}")
+    public ResponseEntity<CommentResponseDto> patchContent(@PathVariable Integer commentId, @RequestBody CommentRequestDto request) {
+        CommentResponseDto patched = service.patchContent(commentId, request);
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(patched);
     }
 
 
-    @DeleteMapping("/api/comments/{id}")
-    public ResponseEntity<CommentResponseDto> delete(@PathVariable Integer id) {
-        service.delete(id);
+    @DeleteMapping("/api/comments/{commentId}")
+    public ResponseEntity<CommentResponseDto> delete(@PathVariable Integer commentId) {
+        service.delete(commentId);
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
             .body(null);

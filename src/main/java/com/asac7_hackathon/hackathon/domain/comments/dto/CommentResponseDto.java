@@ -1,10 +1,8 @@
 package com.asac7_hackathon.hackathon.domain.comments.dto;
 
 import com.asac7_hackathon.hackathon.domain.comments.model.Comment;
-import com.asac7_hackathon.hackathon.domain.comments.model.Like;
+import com.asac7_hackathon.hackathon.domain.posts.entitiy.Post;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,7 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CommentResponseDto {
 
-    private Integer id;
+    private Integer commentId;
 
     private String content;
 
@@ -20,10 +18,10 @@ public class CommentResponseDto {
 
     private LocalDateTime update_at;
 
-    private List<Like> likeCount;
+    private Post post;
 
     public static CommentResponseDto from(Comment comment) {
-        return new CommentResponseDto(comment.getId(), comment.getContent(), comment.getCreateAt(),
-            comment.getUpdateAt(), comment.getLike());
+        return new CommentResponseDto(comment.getCommentId(), comment.getContent(), comment.getCreateAt(),
+            comment.getUpdateAt(), comment.getPost());
     }
 }

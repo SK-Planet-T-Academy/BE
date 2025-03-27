@@ -17,10 +17,10 @@ public class CommentRepo {
 
     public void patchContent(Integer id, Comment entity) {
 
-        Comment updateEntity = new Comment(id, entity.getContent(), entity.getCreateAt(), LocalDateTime.now(),
-            entity.getLike());
+        Comment updateEntity = new Comment(id, entity.getContent(), entity.getCreateAt(), LocalDateTime.now()
+            , entity.getPost());
 
         String patchQuery = "UPDATE comments SET content = ?, update_at = ? WHERE id = ?";
-        jdbcTemplate.update(patchQuery, updateEntity.getContent(), updateEntity.getUpdateAt(), updateEntity.getId());
+        jdbcTemplate.update(patchQuery, updateEntity.getContent(), updateEntity.getUpdateAt(), updateEntity.getCommentId());
     }
 }
