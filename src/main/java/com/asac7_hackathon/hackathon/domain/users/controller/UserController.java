@@ -1,12 +1,12 @@
 package com.asac7_hackathon.hackathon.domain.users.controller;
 
+import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserFindResponseDto;
 import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserLoginRequestDto;
 import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserUpsertRequestDto;
 import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserResponseDto;
 import com.asac7_hackathon.hackathon.domain.users.service.UserService;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,18 +28,18 @@ public class UserController {
 
   @ResponseBody
   @RequestMapping(value = "", method = RequestMethod.GET)
-  public ResponseEntity<List<UserResponseDto>> retrieveAll() {
+  public ResponseEntity<List<UserFindResponseDto>> retrieveAll() {
     log.info(userService.getClass().toString());
-    List<UserResponseDto> users = userService.findAll();
+    List<UserFindResponseDto> users = userService.findAll();
     return ResponseEntity
         .status(HttpStatus.OK)
         .body(users);
   }
 
   @RequestMapping(value = {"/{id}"}, method = RequestMethod.GET)
-  public ResponseEntity<UserResponseDto> read(@PathVariable Integer id) {
+  public ResponseEntity<UserFindResponseDto> read(@PathVariable Integer id) {
     log.info(userService.getClass().toString());
-    UserResponseDto user = userService.findById(id);
+    UserFindResponseDto user = userService.findById(id);
     return ResponseEntity
         .status(HttpStatus.OK)
         .body(user);
@@ -85,14 +85,14 @@ public class UserController {
   }
 
   @ResponseBody
-  @RequestMapping(value = "/logout", method = RequestMethod.POST)
-  public ResponseEntity<UserResponseDto> logout(@RequestBody Map<String, String> request) {
-    String email = request.get("email");
+  @RequestMapping(value = "/logout/{id}", method = RequestMethod.POST)
+  public ResponseEntity<UserResponseDto> logout(@PathVariable Integer id) {
+    UserFindResponseDto user = userService.findById(id);
+    String email = user.getEmail();
     log.info("로그아웃 요청: {}", email);
+    UserResponseDto logoutEmail = userService.logout(email);
 
-    UserResponseDto user = userService.logout(email);
-
-    return ResponseEntity.ok(user);
+    return ResponseEntity.ok(logoutEmail);
   }
 
 }

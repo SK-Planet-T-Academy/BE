@@ -1,5 +1,6 @@
 package com.asac7_hackathon.hackathon.domain.users.service;
 
+import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserFindResponseDto;
 import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserLoginRequestDto;
 import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserResponseDto;
 import com.asac7_hackathon.hackathon.domain.users.controller.dto.UserUpsertRequestDto;
@@ -20,22 +21,22 @@ public class UserService {
   private final UserRepository userRepository;
 
   @Transactional(readOnly = true)
-  public List<UserResponseDto> findAll() {
+  public List<UserFindResponseDto> findAll() {
     List<User> retrieved = userRepository.findAll();
     if (retrieved.isEmpty()) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "등록된 사용자가 없습니다.");
     }
-    return retrieved.stream().map(UserResponseDto::from).toList();
+    return retrieved.stream().map(UserFindResponseDto::from).toList();
   }
 
   @Transactional
-  public UserResponseDto findById(Integer id) {
+  public UserFindResponseDto findById(Integer id) {
     User retrievedUser = userRepository.findById(id)
         .orElseThrow(() -> {
           log.error("유저를 찾을 수 없습니다. ID : {}", id);
           return new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을수 없습니다 : " + id);
         });
-    UserResponseDto result = UserResponseDto.from(retrievedUser);
+    UserFindResponseDto result = UserFindResponseDto.from(retrievedUser);
     log.info("유저 반환 완료. ID : {}", id);
     return result;
   }
